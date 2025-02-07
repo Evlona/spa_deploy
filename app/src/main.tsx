@@ -19,9 +19,9 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <GlobalStyle />
     <Layout>
-    <QueryClientProvider client={queryClient}>
-      <App />
-    </QueryClientProvider>
+      <QueryClientProvider client={queryClient}>
+        <App />
+      </QueryClientProvider>
     </Layout>
   </StrictMode>,
 );
