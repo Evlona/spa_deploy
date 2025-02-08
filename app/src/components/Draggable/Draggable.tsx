@@ -9,7 +9,7 @@ export const Draggable = ({ children }: PropsWithChildren): JSX.Element => {
     <S.Draggable
       isDragging={isDraggingRef.current}
       position={position}
-      onMouseDown={(e) => handleMouseDown(window, e)}
+      onMouseDown={handleMouseDown}
     >
       {children}
     </S.Draggable>

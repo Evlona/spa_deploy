@@ -1,7 +1,5 @@
 import { Wrapper } from "@/components/Wrapper";
-import { Text } from "@/components/Text";
 import { testIds } from "@tests/App/config";
-import { Draggable } from "@/components/Draggable";
 
 export function App() {
   return (
@@ -11,15 +9,7 @@ export function App() {
       height="100%"
       data-testid={testIds.app}
     >
-      <Draggable>
-        <Text>DragMe</Text>
-      </Draggable>
-      <Draggable>
-        <Text>DragMe</Text>
-      </Draggable>
-      <Draggable>
-        <Text>DragMe</Text>
-      </Draggable>
+      Coming soon...
     </Wrapper>
   );
 }

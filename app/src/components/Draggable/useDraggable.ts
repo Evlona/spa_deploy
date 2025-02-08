@@ -10,7 +10,7 @@ export const useDraggable = () => {
   const isDraggingRef = useRef<boolean>(false);
   const offsetRef = useRef<Point>({ x: 0, y: 0 });
 
-  const handleMouseMove = useCallback((e: MouseEvent) => {
+  const handlePointerMove = useCallback((e: MouseEvent) => {
     if (isDraggingRef.current) {
       setPosition({
         x: e.clientX - offsetRef.current.x,
@@ -19,37 +19,34 @@ export const useDraggable = () => {
     }
   }, []);
 
-  const handleMouseUp = useCallback(() => {
+  const handlePointerUp = useCallback(() => {
     isDraggingRef.current = false;
-    window.removeEventListener("mousemove", handleMouseMove);
-    window.removeEventListener("mouseup", handleMouseUp);
-  }, [handleMouseMove]);
+    window.removeEventListener("mousemove", handlePointerMove);
+    window.removeEventListener("mouseup", handlePointerUp);
+  }, [handlePointerMove]);
 
-  const handleMouseDown = useCallback(
-    (window: Window, e: React.MouseEvent) => {
-      isDraggingRef.current = true;
-      // Calculate offset based on current position and pointer location
-      offsetRef.current = {
-        x: e.clientX - position.x,
-        y: e.clientY - position.y,
-      };
-      window.addEventListener("mousemove", handleMouseMove);
-      window.addEventListener("mouseup", handleMouseUp);
-    },
-    [position, handleMouseMove, handleMouseUp],
-  );
+  const handlePointerDown = useCallback((e: React.MouseEvent) => {
+    isDraggingRef.current = true;
+    // Calculate offset from the current pointer position relative to the element's position
+    offsetRef.current = {
+      x: e.clientX - position.x,
+      y: e.clientY - position.y,
+    };
+    window.addEventListener("mousemove", handlePointerMove);
+    window.addEventListener("mouseup", handlePointerUp);
+  }, [position, handlePointerMove, handlePointerUp]);
 
-  // Cleanup if component unmounts while dragging
+  // Cleanup global event listeners on unmount
   useEffect(() => {
     return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("mouseup", handleMouseUp);
+      window.removeEventListener("mousemove", handlePointerMove);
+      window.removeEventListener("mouseup", handlePointerUp);
     };
-  }, [handleMouseMove, handleMouseUp]);
+  }, [handlePointerMove, handlePointerUp]);
 
   return {
     position,
-    handleMouseDown,
+    handleMouseDown: handlePointerDown,
     isDraggingRef,
   };
 };
